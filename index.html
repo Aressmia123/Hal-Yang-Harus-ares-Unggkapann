@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Someone Special</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #fff5f5 0%, #f8e8ff 100%);
+            color: #5a3a6e;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+            z-index: 10;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: #e85a8a;
+        }
+        
+        .message {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        
+        .message.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #e85a8a, #ff8da1);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(232, 90, 138, 0.4);
+            font-weight: 600;
+            margin-top: 20px;
+            outline: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(232, 90, 138, 0.6);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .music-control {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 20;
+        }
+        
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            animation: animate 8s linear forwards;
+        }
+        
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .personal-message {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e0c4e0;
+            font-family: inherit;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            resize: none;
+            min-height: 100px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(to right, #9b5de5, #b388ff);
+        }
+        
+        .heart-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .heart-btn::before {
+            content: '❤️';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+        }
+        
+        .heart-btn.clicked::before {
+            transform: translate(-50%, -50%) scale(3);
+            opacity: 1;
+        }
+        
+        footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #b39dbc;
+        }
+        
+        .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            margin-top: 10px;
+            color: #e85a8a;
+        }
+    </style>
+</head>
+<body>
+    <div class="music-control" id="musicToggle">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 8.27063V15.7294C5 18.0583 7.43268 19.3721 9.29162 18.1958L14.9096 14.6316L14.8851 14.6105L20.3903 11.015C22.1951 9.87993 22.2253 7.05902 20.4444 5.88195L15.0835 2.27123C13.3833 1.15192 11 2.48663 11 4.55919V12.1355L11.0139 12.1281L6.29381 15.2542C5.62998 15.7066 5 15.3727 5 14.5859V9.41408C5 8.62726 5.62998 8.29336 6.29381 8.74575L10.9783 11.8533L11 11.8648V4.55919C11 2.48663 13.3833 1.15192 15.0835 2.27123L20.4444 5.88195C22.2253 7.05902 22.1951 9.87993 20.3903 11.015L14.8851 14.6105L14.9096 14.6316L9.29162 18.1958C7.43268 19.3721 5 18.0583 5 15.7294V8.27063Z" fill="#e85a8a"/>
+        </svg>
+        <audio id="bgMusic" loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+    
+    <div class="container">
+        <h1>Untuk inaaa</h1>
+        
+        <div class="message" id="message1">
+            <p>Ketika ares Bermain Bersamaa inaa ares Ituu Nyamann Bangett...</p>
+        </div>
+        
+        <div class="message" id="message2">
+            <p>inaa Itu Udah Kaya Pendamping Hidup ares Kemana mana Selalu Ditemenin...</p>
+        </div>
+        
+        <div class="message" id="message3">
+            <p>Apakahh inaa Bersediaa Menemani ares Sampaii Kapanpunn?...</p>
+        </div>
+        
+        <div class="message" id="message4">
+            <p>Apakahh inaa Mau Kitaa Jalaninn Hubungan Bukan Teman Lagii?...</p>
+        </div>
+        
+        <div class="message" id="message5">
+            <p>Dann 1 Lagii aress Bakall lindunginn inaa Sampaiii Kapannpun. Sentuh Hatinya Dan tuliskan Pesan ina Dan ss Kasih Ke aress yaa 😁😁</p>
+        </div>
+        
+        <button class="btn heart-btn" id="showMoreBtn">Sentuh Hati Ini</button>
+        
+        <div class="personal-message" id="personalMessage">
+            <h3>Kirim Pesan Khusus</h3>
+            <textarea id="messageInput" placeholder="Tuliskan pesan khususmu di sini..."></textarea>
+            <button class="btn submit-btn" id="submitMessageBtn">Kirim Pesan</button>
+        </div>
+        
+        <footer>
+            Dibuat dengan sepenuh hati
+            <div class="signature">Untuk Seseorang yang Spesial</div>
+        </footer>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createHearts() {
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                
+                // Random properties
+                const size = Math.random() * 20 + 10;
+                const color = `hsl(${Math.random() * 60 + 320}, 70%, 60%)`;
+                const posX = Math.random() * window.innerWidth;
+                const delay = Math.random() * 5;
+                
+                heart.innerHTML = '❤️';
+                heart.style.left = `${posX}px`;
+                heart.style.bottom = '-50px';
+                heart.style.fontSize = `${size}px`;
+                heart.style.color = color;
+                heart.style.animationDelay = `${delay}s`;
+                
+                document.body.appendChild(heart);
+            }
+        }
+        
+        // Show messages sequentially
+        function showMessages() {
+            const messages = document.querySelectorAll('.message');
+            let delay = 1000;
+            
+            messages.forEach((message, index) => {
+                setTimeout(() => {
+                    message.classList.add('visible');
+                }, delay * (index + 1));
+            });
+        }
+        
+        // Music control
+        const musicToggle = document.getElementById('musicToggle');
+        const bgMusic = document.getElementById('bgMusic');
+        
+        musicToggle.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicToggle.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.70914 5.54417C5 6.21522 5 7.26803 5 9.37365V14.6263C5 16.732 5 17.7848 5.70914 18.4558C6.41827 19.1269 7.56389 19.1242 9.85512 19.1187L10.0779 19.1184C11.8479 19.1136 12.733 19.1112 13.3689 18.7428C14.0049 18.3743 14.3432 17.7256 15.0198 16.4281L18.1363 9.6435C18.7196 8.52856 19.0112 7.9711 18.9215 7.42995C18.8318 6.8888 18.3801 6.46684 17.4766 5.62293C16.7867 4.97525 16.1616 4.3885 15.6564 3.94975C14.9804 3.36862 14.6424 3.07805 14.2326 2.94806C13.8229 2.81806 13.3938 2.86632 12.5357 2.96283L9.72313 3.35956C6.44137 3.83217 4.80048 4.06847 3.90024 5.13772C3 6.20697 3 7.85867 3 11.1621V12.8379C3 16.1413 3 17.793 3.90024 18.8623C4.80048 19.9315 6.44137 20.1678 9.72313 20.6404L10.0884 20.6973C11.9263 20.9582 12.8453 21.0886 13.4971 20.77C14.1489 20.4513 14.4293 19.7634 14.9903 18.3875L18.1363 11.5245C18.7196 10.4096 19.0112 9.85213 18.9215 9.31098C18.8318 8.76983 18.3801 8.34787 17.4766 7.50396C16.7867 6.85628 16.1616 6.26953 15.6564 5.83078C14.9804 5.24965 14.6424 4.95908 14.2326 4.82909C13.8229 4.69909 13.3938 4.74735 12.5357 4.84386L9.72313 5.24059C6.44137 5.7132 4.80048 5.9495 3.90024 7.01875C3 8.088 3 9.7397 3 13.0431V14.6263C3 16.732 3 17.7848 3.70914 18.4558C4.41827 19.1269 5.56389 19.1242 7.85512 19.1187L8.07793 19.1184C9.84785 19.1136 10.733 19.1112 11.3689 18.7428C12.0049 18.3743 12.3432 17.7256 13.0198 16.4281L16.1363 9.6435C16.7196 8.52856 17.0112 7.9711 16.9215 7.42995C16.8318 6.8888 16.3801 6.46684 15.4766 5.62293C14.7867 4.97525 14.1616 4.3885 13.6564 3.94975C12.9804 3.36862 12.6424 3.07805 12.2326 2.94806C11.8229 2.81806 11.3938 2.86632 10.5357 2.96283L7.72313 3.35956C4.44137 3.83217 2.80048 4.06847 1.90024 5.13772C1 6.20697 1 7.85867 1 11.1621V12.8379C1 16.1413 1 17.793 1.90024 18.8623C2.80048 19.9315 4.44137 20.1678 7.72313 20.6404L8.08835 20.6973C9.92633 20.9582 10.8453 21.0886 11.4971 20.77C12.1489 20.4513 12.4293 19.7634 12.9903 18.3875L16.1363 11.5245C16.7196 10.4096 17.0112 9.85213 16.9215 9.31098C16.8318 8.76983 16.3801 8.34787 15.4766 7.50396C14.7867 6.85628 14.1616 6.26953 13.6564 5.83078C12.9804 5.24965 12.6424 4.95908 12.2326 4.82909C11.8229 4.69909 11.3938 4.74735 10.5357 4.84386L7.72313 5.24059C4.44137 5.7132 2.80048 5.9495 1.90024 7.01875C1 8.088 1 9.7397 1 13.0431Z" fill="#e85a8a"/></svg>';
+            } else {
+                bgMusic.pause();
+                musicToggle.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 8.27063V15.7294C5 18.0583 7.43268 19.3721 9.29162 18.1958L14.9096 14.6316L14.8851 14.6105L20.3903 11.015C22.1951 9.87993 22.2253 7.05902 20.4444 5.88195L15.0835 2.27123C13.3833 1.15192 11 2.48663 11 4.55919V12.1355L11.0139 12.1281L6.29381 15.2542C5.62998 15.7066 5 15.3727 5 14.5859V9.41408C5 8.62726 5.62998 8.29336 6.29381 8.74575L10.9783 11.8533L11 11.8648V4.55919C11 2.48663 13.3833 1.15192 15.0835 2.27123L20.4444 5.88195C22.2253 7.05902 22.1951 9.87993 20.3903 11.015L14.8851 14.6105L14.9096 14.6316L9.29162 18.1958C7.43268 19.3721 5 18.0583 5 15.7294V8.27063Z" fill="#e85a8a"/></svg>';
+            }
+        });
+        
+        // Show more button
+        const showMoreBtn = document.getElementById('showMoreBtn');
+        const personalMessage = document.getElementById('personalMessage');
+        
+        showMoreBtn.addEventListener('click', function() {
+            this.classList.add('clicked');
+            setTimeout(() => {
+                personalMessage.style.display = 'block';
+                personalMessage.style.animation = 'fadeIn 1s ease';
+                this.style.display = 'none';
+            }, 800);
+        });
+        
+        // Submit message
+        const submitMessageBtn = document.getElementById('submitMessageBtn');
+        const messageInput = document.getElementById('messageInput');
+        
+        submitMessageBtn.addEventListener('click', function() {
+            if (messageInput.value.trim() !== '') {
+                alert('Pesan kamu telah terkirim dari hati ke hati ❤️');
+                messageInput.value = '';
+            } else {
+                alert('Tolong tuliskan pesan terlebih dahulu ya...');
+            }
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createHearts();
+            showMessages();
+            
+            // Create more hearts periodically
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    createHearts();
+                }
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
+
